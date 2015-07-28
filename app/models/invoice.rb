@@ -10,6 +10,9 @@ class Invoice < ActiveRecord::Base
     self.invoice_items.map(&:total_cost).map(&:to_i).reduce(:+)
   end
 
+  def total_items
+    self.invoice_items.map(&:quantity).map(&:to_i).reduce(:+)
+  end
   # Invoice.first.invoice_items.map {|i| i.total_cost}.map{|i|i.to_i}.reduce(:+)
 
 

@@ -15,8 +15,18 @@ class Merchant < ActiveRecord::Base
 
   end
 
+  def self.most_items(quantity)
+    Merchant.all.sort_by { |merchant| merchant.items_sold }.reverse.first(quantity.to_i)
+  end
+
+  def items_sold
+    self.invoices.map(&:total_items).reduce(:+)
+  end
+
   def revenue
     self.invoices.map(&:total_revenue).reduce(:+)
   end
+
+
 
 end
