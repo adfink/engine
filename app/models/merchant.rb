@@ -39,10 +39,14 @@ class Merchant < ActiveRecord::Base
   # end
 
 
-  def total_revenue_by_date(date)
-    binding.pry
+  def revenue_by_date_for_one_merchant(date)
+    # binding.pry
     # parsed_date = Date.parse(date)
     successful.where(created_at: date).joins(:invoice_items).sum("quantity * unit_price")
+  end
+
+  def self.revenue_by_date(date)
+    all.inject(0) { |sum, merchant| sum + merchant.revenue_by_date_for_one_merchant(date) }
   end
 
   def favorite_customer

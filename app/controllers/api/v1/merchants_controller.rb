@@ -44,14 +44,18 @@ class Api::V1::MerchantsController < ApplicationController
     respond_with Merchant.most_items(params[:quantity].to_i)
   end
 
+  # def revenue_by_date
+  #   respond_with Merchant.total_revenue_by_date(params[:date])
+  # end
+
   def revenue_by_date
-    respond_with Merchant.total_revenue_by_date(params[:date])
+    respond_with Merchant.revenue_by_date(params[:date])
   end
 
   def revenue
     if params[:date]
       # binding.pry
-      respond_with Merchant.find_by(id: params[:id]).total_revenue_by_date(params[:date])
+      respond_with Merchant.find_by(id: params[:id]).revenue_by_date_for_one_merchant(params[:date])
     else
       respond_with Merchant.find_by(id: params[:id]).total_revenue
     end

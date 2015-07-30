@@ -1,5 +1,6 @@
 class Api::V1::ItemsController < ApplicationController
 
+
   def index
     if params[:merchant_id]
       respond_with Item.where(merchant_id: params[:merchant_id])
@@ -36,5 +37,15 @@ class Api::V1::ItemsController < ApplicationController
 
   def most_items
     respond_with Item.most_items(params[:quantity].to_i)
+  end
+
+  def best_day
+    respond_with Item.find_by(id: params[:id]).best_day
+  end
+
+  private
+
+  def item_params
+    params.require(:item).permit(:name, :description, :unit_price, :merchant_id)
   end
 end

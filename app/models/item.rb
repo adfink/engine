@@ -4,6 +4,11 @@ class Item < ActiveRecord::Base
   has_many :invoice_items
   has_many :invoices, through: :invoice_items
 
+  validates :name, presence: true
+  validates :description, presence: true
+  validates :unit_price, presence: true
+  validates :merchant_id, presence: true
+
   def self.most_revenue(quantity)
     all.sort_by { |item| item.total_revenue }.last(quantity).reverse
   end
@@ -22,5 +27,9 @@ class Item < ActiveRecord::Base
 
   def successful
     invoices.successful
+  end
+
+  def best_day
+    invoices.successful.group('invoices.created_at').sum('quantity * unit_price').sort_by(&:last).reverse.first[0]
   end
 end
